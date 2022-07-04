@@ -4,11 +4,18 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 )
+
+type CommonResposne struct {
+	Err  bool        `json:"err"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
+}
 
 //获取基本信息
 type DGetInfo struct{}
@@ -18,7 +25,7 @@ type GetInfoResponse struct {
 }
 
 func (s *DGetInfo) DecodeRespose(c context.Context, w *http.Response) (response interface{}, err error) {
-	res := GetInfoResponse{}
+	res := CommonResposne{Data: GetInfoResponse{}}
 	err = json.NewDecoder(w.Body).Decode(&res)
 	if err != nil {
 		return
@@ -51,7 +58,7 @@ type ExchangeResponse struct {
 }
 
 func (s *DExchange) DecodeRespose(c context.Context, w *http.Response) (response interface{}, err error) {
-	res := ExchangeRequest{}
+	res := CommonResposne{Data: ExchangeRequest{}}
 	err = json.NewDecoder(w.Body).Decode(&res)
 	if err != nil {
 		return
@@ -61,14 +68,17 @@ func (s *DExchange) DecodeRespose(c context.Context, w *http.Response) (response
 }
 
 func (s *DExchange) EncodeRequset(c context.Context, r *http.Request, req interface{}) error {
-	// request := req.(ExchangeRequest)
-	// r.Form = r.URL.Query()
-	// r.Form.Add("idx", strconv.Itoa(request.Index))
+	request := req.(ExchangeRequest)
+	r.Form = r.URL.Query()
+	r.Form.Add("idx", strconv.Itoa(request.Index))
+	fmt.Println(r)
+
 	return nil
 }
 
 func ExchangeDecodeRequest(c context.Context, r *http.Request) (request interface{}, err error) {
 	req := mux.Vars(r)
+	fmt.Println(req)
 	if _, ok := req["idx"]; ok {
 		idx, _ := strconv.Atoi(req["idx"])
 		return ExchangeRequest{Index: idx}, nil
