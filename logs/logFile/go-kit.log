@@ -1,0 +1,6 @@
+time=2022-07-15T14:48:03.639162+08:00 caller=instancer.go:48 service=doubleGiftService tags=[default] instances=0
+time=2022-07-15T14:48:03.6766039+08:00 caller=instancer.go:48 service=doubleGiftService tags=[default] instances=0
+time=2022-07-15T14:48:03.6791436+08:00 caller=instancer.go:48 service=doubleGiftService tags=[rpc] instances=1
+time=2022-07-15T14:48:03.684712+08:00 caller=instancer.go:48 service=doubleGiftService tags=[rpc] instances=1
+time=2022-07-15T14:48:07.1685435+08:00 caller=log.go:67 client=rpc function=EncodeRequset result=null took=0s
+time=2022-07-15T14:48:07.1725765+08:00 caller=log.go:80 client=rpc function=EncodeRequset result=null took=0s
