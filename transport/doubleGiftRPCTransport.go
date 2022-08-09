@@ -31,11 +31,11 @@ func (d *DGetInfoRpc) DecodeResponse(c context.Context, res interface{}) (interf
 type DExchangeRpc struct{}
 
 func (d *DExchangeRpc) EncodeRequset(c context.Context, req interface{}) (interface{}, error) {
-	r, ok := req.(*pb.ExchangeReq)
+	r, ok := req.(ExchangeRequest)
 	if !ok {
 		return nil, errors.New("exchange.ExchangeReq：解析错误")
 	}
-	return &pb.ExchangeReq{Idx: r.Idx}, nil
+	return &pb.ExchangeReq{Idx: int32(r.Index)}, nil
 }
 
 func (d *DExchangeRpc) DecodeResponse(c context.Context, res interface{}) (interface{}, error) {
@@ -43,7 +43,7 @@ func (d *DExchangeRpc) DecodeResponse(c context.Context, res interface{}) (inter
 	if !ok {
 		return util.Response(true, "exchange.ExchangeReq：解析错误", nil)
 	}
-	return ExchangeResponse{Gotten: int(r.Gotten)}, nil
+	return util.Response(false, "success", ExchangeResponse{Gotten: int(r.Gotten)})
 }
 
 func RpcArithmeticFactory(_ context.Context, tsp IRPCTransport, serviceName, method string, response interface{}) sd.Factory {

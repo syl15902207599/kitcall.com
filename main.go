@@ -20,7 +20,6 @@ func main() {
 
 	c := context.Background()
 	r := handler.MakeHttpHandlers(c)
-
 	errChan := make(chan error)
 	go func() {
 		err := http.ListenAndServe(":"+strconv.Itoa(*util.HPort), r)

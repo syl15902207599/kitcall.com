@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
+	"os"
 	"strconv"
 
 	"github.com/go-kit/kit/sd/consul"
@@ -57,4 +58,15 @@ func initConsulClient() {
 		panic("url error : " + err.Error())
 	}
 	DisClient.Client = consul.NewClient(client)
+}
+
+func initLog() {
+	f, err := os.OpenFile("./logs/logFile/go-kit.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		panic("log file open fataled")
+	}
+	Logger = log.NewLogfmtLogger(f)
+	Logger = log.With(Logger, "time", log.DefaultTimestamp)
+	Logger = log.With(Logger, "caller", log.DefaultCaller)
+
 }
